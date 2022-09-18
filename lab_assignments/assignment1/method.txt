@@ -1,0 +1,44 @@
+#1
+> The assembled genome and its corresponding gene annotation of Arabidopsis thaliana was taken from Phytozome "https://phytozome-next.jgi.doe.gov/".
+Specifically the Arabidopsis thaliana Araport11.
+	File 1 - Athaliana_447_TAIR10.fa.gz
+	File 2 - Athaliana_447_Araport11.gene_exons.gff3.gz
+
+> The compressed files were uncompressed using:
+	'gzip -d Athaliana_447_TAIR10.fa.gz' & 'gzip -d Athaliana_447_Araport11.gene_exons.gff3.gz'
+
+> The first 10 lines of the resulting files were opened using:
+	'head -10 Athaliana_447_TAIR10.fa' & 'head -10 Athaliana_447_Araport11.gene_exons.gff3'
+
+#2
+> The SRA data related to project "PRJEB8427" in the NCBI database was found in the NCBI database here "https://www.ncbi.nlm.nih.gov/sra?LinkName=bioproject_sra_all&from_uid=275400".
+Four Arabidopsis thaliana sha ecotype RNA-sequence data was found. The accession numbers for each sequence data was as follows;
+
+ERR754063, ERR754073, ERR754081, ERR754085
+
+> The SRA files were downloaded by:
+
+	prefetch ERR754063,
+	prefetch ERR754073,
+	prefetch ERR754081,
+	prefetch ERR754085,
+
+> fastq files were extracted from the SRA-accessions using:
+
+	$fasterq-dump ERR754063,
+	$fasterq-dump ERR754073,
+	$fasterq-dump ERR754081,
+	$fasterq-dump ERR754085,
+
+> These yielded files;
+	ERR754063_1.fastq,
+	ERR754063_2.fastq,
+	ERR754073_1.fastq,
+	ERR754073_2.fastq,
+	ERR754081_1.fastq,
+	ERR754081_2.fastq,
+
+*ERR754085 couldnt not be extracted due to file size errors.
+
+> The first 10 lines of file ERR754063_1.fastq was opened using
+	'head -10 ERR754063_1.fastq'
