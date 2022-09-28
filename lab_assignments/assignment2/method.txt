@@ -1,0 +1,26 @@
+1.
+>Fastqc was installed at root using:
+
+	"conda install -c bioconda fastqc
+"
+
+> A job script file was created using:
+
+	"vi run_fastqc.sh
+"
+
+>The script work by; changing to directory with the fastq files:
+
+	"cd /mnt/home/kusiapp2/gitHub/plb812/data/
+"
+
+>Running fastqc on all fastq files with the directory and outputting the results to
+another directory:
+
+	"fastqc -t 10 -o /mnt/home/kusiapp2/gitHub/plb812/data/resultsFastqc *.fastq
+"
+
+>The job script was submitted using:
+
+	"sbatch run_fastqc.sh
+"
