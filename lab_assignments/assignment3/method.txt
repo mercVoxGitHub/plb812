@@ -1,0 +1,39 @@
+>	All sequencing reads do not contain erroneous drop in quality scores near the 5' end.
+	As expected from sequencing by synthesis methods, quality scores worsen closer to the
+	3' end across all sequencing reads due to signal decay or phasing.
+
+>	Most of the quality scores per sequence were good across all sequencing reads. 
+
+>	Across all sequencing results, the over-represented sequences were due to adapter
+	sequences or primers implying no contamination.
+
+
+>	BBTools was installed with
+		"conda install -c agbiome bbtools"
+
+
+>	Variables were assigned to respective SRA files numbers:
+		"ERR1="ERR754063""
+		"ERR1="ERR754063""
+		"ERR1="ERR754063""
+		"ERR1="ERR754063""
+
+> 	Adapter sequences for each fastq files were obtained
+		"bbmerge.sh in1=${ERR1}_1.fastq in2=${ERR1}_2.fastq outa=/mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/adapters/adapters${ERR1}.fa"
+		"bbmerge.sh in1=${ERR2}_1.fastq in2=${ERR2}_2.fastq outa=/mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/adapters/adapters${ERR2}.fa"
+		"bbmerge.sh in1=${ERR3}_1.fastq in2=${ERR3}_2.fastq outa=/mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/adapters/adapters${ERR3}.fa"
+		"bbmerge.sh in1=${ERR4}_1.fastq in2=${ERR4}_2.fastq outa=/mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/adapters/adapters${ERR4}.fa"
+
+>	Each fastq file was trimmed:
+		"bbduk.sh in1=${ERR1}_1.fastq in2=${ERR1}_2.fastq out1=/mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/trimmed${ERR1}_1.fastq out2=/mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/trimmed${ERR1}_2.fastq ref=/mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/adapters/adapters${ERR1}.fa ktrim=r k=23 mink=11 hdist=1 qtrim=rl trimq=30 maq=30 overwrite=true tpe tbo"
+		"bbduk.sh in1=${ERR2}_1.fastq in2=${ERR2}_2.fastq out1=/mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/trimmed${ERR2}_1.fastq out2=/mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/trimmed${ERR2}_2.fastq ref=/mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/adapters/adapters${ERR2}.fa ktrim=r k=23 mink=11 hdist=1 qtrim=rl trimq=30 maq=30 overwrite=true tpe tbo"
+		"bbduk.sh in1=${ERR3}_1.fastq in2=${ERR3}_2.fastq out1=/mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/trimmed${ERR3}_1.fastq out2=/mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/trimmed${ERR3}_2.fastq ref=/mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/adapters/adapters${ERR3}.fa ktrim=r k=23 mink=11 hdist=1 qtrim=rl trimq=30 maq=30 overwrite=true tpe tbo"
+		"bbduk.sh in1=${ERR4}_1.fastq in2=${ERR4}_2.fastq out1=/mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/trimmed${ERR4}_1.fastq out2=/mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/trimmed${ERR4}_2.fastq ref=/mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/adapters/adapters${ERR4}.fa ktrim=r k=23 mink=11 hdist=1 qtrim=rl trimq=30 maq=30 overwrite=true tpe tbo"
+
+>	After changing to the appropriate directory, fastqc was performed on the trimmed fastq files
+		"fastqc -t 10 -o /mnt/home/kusiapp2/gitHub/plb812/data/resultsFastqc/trimmed *.fastq"
+
+>	Regarding trimming arguments
+		qtrim=rl was used to trim both ends of the reads due to the sequences being paired reads.
+		trimq=30 was used as any phred scores below 30 is deemed an undesirable quality score.
+		maq=30 was used to filter out and reads with phred scores below 30.
