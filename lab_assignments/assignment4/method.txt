@@ -1,0 +1,54 @@
+> The genome index for Arabidopsis Thaliana was built using "STAR" framework:	
+
+	STAR \
+	--runThreadN 64 \
+	--runMode genomeGenerate \
+	--genomeDir /mnt/home/kusiapp2/gitHub/plb812/data/indexes/AThaliana/ \
+	--genomeFastaFiles /mnt/home/kusiapp2/gitHub/plb812/data/araport11/Phytozome/PhytozomeV12/early_release/Athaliana_447_Araport11/assembly/Athaliana_447_TAIR10.fa \
+	--sjdbGTFfile /mnt/home/kusiapp2/gitHub/plb812/data/araport11/Phytozome/PhytozomeV12/early_release/Athaliana_447_Araport11/annotation/Athaliana_447_Araport11.gene_exons.gtf
+
+>Variables were assigned as below:
+
+	"ERR1="ERR754063""
+	"ERR1="ERR754063""
+	"ERR1="ERR754063""
+	"ERR1="ERR754063""
+
+>The reads from each sample was aligned using "STAR" aligner as:
+
+	#Star alignment ERR1
+	STAR \
+	--runThreadN 64 \
+	--genomeDir /mnt/home/kusiapp2/gitHub/plb812/data/indexes/AThaliana/ \
+	--readFilesIn /mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/trimmed${ERR1}_1.fastq \
+	/mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/trimmed${ERR1}_2.fastq \
+	--outFileNamePrefix /mnt/home/kusiapp2/gitHub/plb812/data/alignments/AThaliana_assignment4/${ERR1}/${ERR1} \
+	--outSAMtype BAM SortedByCoordinate
+
+	#Star alignment ERR2
+	STAR \
+	--runThreadN 64 \
+	--genomeDir /mnt/home/kusiapp2/gitHub/plb812/data/indexes/AThaliana/ \
+	--readFilesIn /mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/trimmed${ERR2}_1.fastq \
+	/mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/trimmed${ERR2}_2.fastq \
+	--outFileNamePrefix /mnt/home/kusiapp2/gitHub/plb812/data/alignments/AThaliana_assignment4/${ERR2}/${ERR2} \
+	--outSAMtype BAM SortedByCoordinate
+
+	#Star alignment ERR3
+	STAR \
+	--runThreadN 64 \
+	--genomeDir /mnt/home/kusiapp2/gitHub/plb812/data/indexes/AThaliana/ \
+	--readFilesIn /mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/trimmed${ERR3}_1.fastq \
+	/mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/trimmed${ERR3}_2.fastq \
+	--outFileNamePrefix /mnt/home/kusiapp2/gitHub/plb812/data/alignments/AThaliana_assignment4/${ERR3}/${ERR3} \
+	--outSAMtype BAM SortedByCoordinate
+
+	#Star alignment ERR4
+	STAR \
+	--runThreadN 64 \
+	--genomeDir /mnt/home/kusiapp2/gitHub/plb812/data/indexes/AThaliana/ \
+	--readFilesIn /mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/trimmed${ERR4}_1.fastq \
+	/mnt/home/kusiapp2/gitHub/plb812/data/trimmedFastq/trimmed${ERR4}_2.fastq \
+	--outFileNamePrefix /mnt/home/kusiapp2/gitHub/plb812/data/alignments/AThaliana_assignment4/${ERR4}/${ERR4} \
+	--outSAMtype BAM SortedByCoordinate
+
