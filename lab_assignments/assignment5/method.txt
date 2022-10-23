@@ -1,0 +1,55 @@
+-Read counts were generated from a an unstranded library.
+
+-Number of reads per gene were counted using featuerCounts:
+
+	"featureCounts -T 10 -s 0 -t exon --extraAttributes gene_id,gene_biotype -a /mnt/home/kusiapp2/gitHub/plb812/data/araport11/Phytozome/PhytozomeV12/early_release/Athaliana_447_Araport11/annotation/Athaliana_447_Araport11.gene_exons.gtf -o /mnt/home/kusiapp2/gitHub/plb812/data/alignments/AThaliana_assignment4/readResults/readCount.txt *.bam
+	"
+
+- pheatmap, RColorBrewer, DESeq2, ggplot2, affy and ggfotify R packages were installed and loaded
+
+-a metadata csv file of column header "SampleID" and "Condition" was created
+
+-Read count and metadata was imported into R using:
+
+	"metadatah = read.csv(file= "metadata2.csv", header=TRUE, sep = ",")
+	counts <- read.csv("readCount.csv", header=TRUE, sep = ",")
+	"
+
+-Deseq object was created using:
+
+	"dds <- DESeqDataSetFromMatrix(countData = round(countdata),
+                              	colData = metadatah,
+                              	design = ~Condition)
+	"
+
+-Genes with low counts were removed using:
+
+	"dds1 <- dds[ rowSums(counts(dds)) >= 10, ]
+	"
+
+-Read counts were normalized using:
+
+	"vst = vst(dds1, blind=FALSE)
+	"
+
+-Differential Expression Analysis was done using:
+
+	"dds1 <- DESeq(dds1)
+	"
+
+-MAPlot was constructed using:
+
+	"plotMA(res_table)
+	"
+
+-p-value was adjusted using:
+
+	"res2 <- results(dds1, alpha=0.05)
+	"
+
+-The number of differently expressed genes with a p-value of 0.05 was determined using:
+
+	"sum(res2$padj < 0.05, na.rm=TRUE)
+	"
+
+- 14 genes were identified.
