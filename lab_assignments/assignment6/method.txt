@@ -1,0 +1,73 @@
+>Genome annotation file was wrangled into topGO format via removing unnececcasrry columns and identfying unique genes
+and exporting that to a file:
+
+	"cut -f2,10 Athaliana_447_Araport11.annotation_info.txt"
+	"cut f-2 Athaliana_447_Araport11.annotation_info.txt | sed '1d' | sort | uniq > gene_list"
+
+>A table was made from the Go terms into topGO format via:
+
+	"cat gene_list | while read line
+	 do
+	 terms=$(grep $line Athaliana_447_Araport11.annotation_info.txt | cut -f10 | tr ',' '\n' | sort | uniq | sed '/^$/d' | tr '\n' ',' | sed 's/\,$//')
+	 echo "$line $terms" | tr ' ' '\t' | sed 's/\,/\,\ /g' >> Athaliana_topGO.tsv
+	 done"
+
+> On R, topGO and GO.db were installed via BiocManager as:
+
+	"BiocManager::install("topGO")"
+	"BiocManager::install("GO.db")"
+
+> Libraries of topGO and Go.db were loaded.
+
+> The GO from Araport11 was read into topGO via:
+
+	"goTerms <- readMappings(file="Athaliana_topGO.tsv")"
+
+> The results of the differentially expressed analysis was read into R via:
+
+	"df = read.csv("DESeq2_droughtsRaw.csv", header = T)"
+
+> The gene id for DEG list was processed to match the gene id of the GO terms via:
+
+	"df$id = as.character(df$id)
+	 df$id = gsub(".Araport11.447","",as.character(df$id))
+	 df$id"
+
+> The processed data was exported and then read back into R via:
+
+	"write.csv(df,"DESeq2_droughtsRawTrimmed.csv", row.names = FALSE)"
+	"res <- read.table("DESeq2_droughtsRawTrimmed.csv",header=TRUE, sep=",")"
+
+> Format to identify DEG via:
+
+	"upGenes <- factor(as.integer(res$id %in% res[res$padj < 0.05 & res$log2FoldChange >=1,]$id))"
+	"names(upGenes) <- res$id"
+	"downGenes <- factor(as.integer(res$id %in% res[res$padj < 0.05 & res$log2FoldChange <=1,]$id))"
+	"names(downGenes) <- res$id"
+
+> The topGO object for Biological Process, Molecular Function and Cellular component was created using:
+
+	"BP <- new("topGOdata", description="Biological Process", ontology="BP",
+          allGenes=downGenes,annot=annFUN.gene2GO,nodeSize=3,gene2GO=goTerms)"
+
+> An enrichment test on each topGO object was performed via:
+
+	"FisherBP <- runTest(BP, algorithm="parentchild",statistic="fisher")"
+
+> A GO term table for each topGO object was generated via:
+
+	"BPgenTable <- GenTable(BP,Fisher=FisherBP,ranksOf="Fisher",
+                       topNodes=length(score(FisherBP)))"
+
+> The generated table was processed to be more human readable via:
+
+	"BPgenTable$Fisher<-gsub("<","",BPgenTable$Fisher)
+	 BPgenTable$fdr <- p.adjust(BPgenTable$Fisher,method="fdr")"
+
+> The generated table was exported as:
+
+	"write.csv(as.data.frame(BPgenTable), "downGenesBPgenTable.csv")"
+
+** No significant genes were up-regulated. Thus GO Terms for "upGenes" were not performed.
+
+	
