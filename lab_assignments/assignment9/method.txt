@@ -1,0 +1,21 @@
+> Protein sequences were downloaded
+
+	and decompressed
+
+	"gzip -d insertFileName.gz"
+
+	then renamed
+
+	"mv insertFileName.fa simplerFileName.fa"
+
+> OrthoFinder was used to analyse the protein sequences as:
+
+	"orthofinder -f /mnt/home/kusiapp2/gitHub/plb812/data/ortho"
+
+> Number of Orthogroups identified was 17407 by using
+
+	"cat N0.tsv | wc -l"
+
+> Rice genes part of the orthogroup for Chalcone Synthase(AT5G13930) was identified using:
+
+	"grep AT5G13930 N0.tsv > results.txt"

@@ -1,0 +1,3 @@
+Number of orthgroups Identified = 17407
+
+N0.HOG0012412	OG0011800	-	AT5G13930.1	evm_27.model.AmTr_v1.0_scaffold00039.31	LOC_Os11g32650.1
