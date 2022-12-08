@@ -1,0 +1,29 @@
+#read quality was assessed using fastqc
+fastqc -t 10 *.fastq.gz
+
+#Adpater sequences were queried > ADAPTER SEQUENCES NOT FOUND
+bbmerge.sh in1=SRR492407_1.fastq.gz in2=SRR492407_2.fastq.gz outa=adaptersSRR492407.fa
+
+#trim sequences
+bbduk.sh in1=SRR492407_1.fastq.gz in2=SRR492407_2.fastq.gz out1=SRR492407_1_phred25.fastq.gz out2=SRR492407_2_phred25.fastq.gz ref=adaptersSRR492407.fa ktrim=r k=23 mink=11 hdist=1 qtrim=rl trimq=25 maq=25 overwrite=true tpe tbo 
+
+#Reassess trimmed reads
+fastqc -t 32 *phred25.fastq.gz
+
+#Indexing the genome
+bwa index -a bwtsw /mnt/home/kusiapp2/gitHub/plb812/data/araport11/Phytozome/PhytozomeV12/early_release/Athaliana_447_Araport11/assembly/Athaliana_447_TAIR10.fa
+
+#Alignments
+bwa mem -t 4 -Y -K 10000000 /mnt/home/kusiapp2/gitHub/plb812/data/araport11/Phytozome/PhytozomeV12/early_release/Athaliana_447_Araport11/assembly/Athaliana_447_TAIR10.fa SRR492407_1_phred25.fastq.gz SRR492407_2_phred25.fastq.gz -o SRR492407aligned.sam
+
+#sorting .sam and conversion to .bam
+samtools sort -O sam -o SRR492407aligned.sam SRR492407aligned.sorted.sam
+
+#Conversion of .sam to .bam and sorting of .bam
+samtools view -S -b SRR492407aligned.sam > SRR492407aligned.bam
+samtools sort SRR492407aligned.bam -o SRR492407aligned.sorted.bam
+
+#mapping statistics
+samtools flagstat SRR492407aligned.sorted.bam
+
+
