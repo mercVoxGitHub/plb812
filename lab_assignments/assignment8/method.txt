@@ -1,0 +1,16 @@
+#Picard Mark
+picard MarkDuplicates I=SRR492407aligned.sorted.bam O=SRR492407dedup.bam R=/mnt/home/kusiapp2/gitHub/plb812/data/araport11/Phytozome/PhytozomeV12/early_release/Athaliana_447_Araport11/assembly/Athaliana_447_TAIR10.fa M=marked_dup_metrics.txt CREATE_INDEX=true
+
+#Adding Read Groups
+picard AddOrReplaceReadGroups I=SRR492407dedup.bam O=SRR492407rgID.bam RGID=1 RGLB=lib1 RGPL=ILLUMINA RGPU=NA RGSM=WS2
+
+#Read groups was indexed
+samtools index /mnt/ufs18/home-209/kusiapp2/gitHub/plb812/data/genome/aThaliana/SRR492407rgID.bam
+
+#Dictionary File of the reference genome was created
+picard CreateSequenceDictionary R=Athaliana_447_TAIR10.fa O=Athaliana_447_TAIR10.dict
+
+#variant Calling
+gatk --java-options "-Xmx4g" HaplotypeCaller -R /mnt/home/kusiapp2/gitHub/plb812/data/araport11/Phytozome/PhytozomeV12/early_release/Athaliana_447_Araport11/assembly/Athaliana_447_TAIR10.fa -I SRR492407rgID.bam -O input.vcf.gz -ERC GVCF 
+
+
